@@ -14,3 +14,45 @@ export function isColorDark(hexColor: string) {
   const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
   return luminance <= 0.5;
 }
+
+export function generateHash(length: number): string {
+  if (length < 3) {
+    throw new Error("Length must be at least 3 to include all character types");
+  }
+
+  const numbers = "0123456789";
+  const lowerCase = "abcdefghijklmnopqrstuvwxyz";
+  const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+  // Ensure at least one character of each type
+  let result =
+    numbers.charAt(Math.floor(Math.random() * numbers.length)) +
+    lowerCase.charAt(Math.floor(Math.random() * lowerCase.length)) +
+    upperCase.charAt(Math.floor(Math.random() * upperCase.length));
+
+  const allCharacters = numbers + lowerCase + upperCase;
+  const charactersLength = allCharacters.length;
+
+  // Fill the rest of the hash
+  for (let i = 3; i < length; i++) {
+    result += allCharacters.charAt(
+      Math.floor(Math.random() * charactersLength)
+    );
+  }
+
+  // Shuffle the result to randomize the order
+  return result
+    .split("")
+    .sort(() => 0.5 - Math.random())
+    .join("");
+}
+
+export function extractWebsiteName(url: string): string {
+  const urlObject = new URL(url);
+
+  // Extract the hostname and split by '.' to remove the domain extension
+  let hostname = urlObject.hostname.split(".")[0];
+
+  // Capitalize the first letter and return
+  return hostname.charAt(0).toUpperCase() + hostname.slice(1);
+}

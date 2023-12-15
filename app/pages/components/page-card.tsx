@@ -9,32 +9,28 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { type Page } from "../../../models/page";
 
-export default function PageCard({}) {
+export default function PageCard({ title, description, slug }: Page) {
   return (
     <Card>
       <CardHeader>
         <div className="flex flex-row justify-between">
-          <CardTitle className="text-lg md:text-xl">Item 1</CardTitle>
-          <Badge className="w-min bg-green-700">Publicado</Badge>
+          <CardTitle className="text-lg md:text-xl">{title}</CardTitle>
         </div>
         <CardDescription className="text-sm text-gray-500 dark:text-gray-400">
-          Description for Item 1
+          {description}
         </CardDescription>
 
         <CardDescription className="text-sm text-gray-500 dark:text-gray-400">
           URL:{" "}
           <Link
-            href="https://onelnk.pro/as3djgh4"
+            href={`https://onelnk.pro/to/${slug}`}
             className="text-blue-500 hover:text-blue-700 dark:text-blue-300 dark:hover:text-blue-500"
             target="_blank"
           >
-            https://onelnk.pro/as3djgh4
+            onelnk.pro/to/{slug}
           </Link>
-        </CardDescription>
-
-        <CardDescription className="text-sm text-gray-500 dark:text-gray-400">
-          Última atualização: 10/10/2021
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-row space-x-2">

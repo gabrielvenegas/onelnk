@@ -1,7 +1,11 @@
 import "./globals.css";
 
+import { ClerkProvider, UserButton } from "@clerk/nextjs";
+
 import { GeistSans } from "geist/font/sans";
+import Link from "next/link";
 import type { Metadata } from "next";
+import { Separator } from "../components/ui/separator";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,10 +18,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={GeistSans.className}>
-        <main>{children}</main>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={GeistSans.className}>
+          <div className="flex w-full p-4 justify-between">
+            <Link href="/" className="font-semibold text-xl">
+              OneLnk
+            </Link>
+            <UserButton afterSignOutUrl="/" />
+          </div>
+          <Separator />
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
