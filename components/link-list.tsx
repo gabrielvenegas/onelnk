@@ -7,26 +7,32 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Page } from "../models/page";
 import { sql } from "@vercel/postgres";
 
-export async function LinkList({ pageId }: { pageId: string }) {
+export async function LinkList({ id, text, background }: Page) {
   const { rows } =
-    await sql`SELECT * FROM public."links" WHERE page_id = ${pageId}`;
+    await sql`SELECT * FROM public."links" WHERE page_id = ${id}`;
 
   return (
     <div className="flex flex-col w-full">
       {rows.map((link) => (
-        <Card key={link.id} className="w-full max-w-md mb-4">
-          <CardContent className="p-4">
-            <Button className="w-full" variant="ghost">
-              <Link
-                className="w-full text-center"
-                target="_blank"
-                href={link.url}
-              >
-                {link.name}
-              </Link>
-            </Button>
+        <Card
+          key={link.id}
+          style={{
+            backgroundColor: background,
+          }}
+          className="w-full max-w-md mb-4"
+        >
+          <CardContent className="p-4 text-center">
+            <Link
+              style={{ color: text }}
+              className="w-full text-center"
+              target="_blank"
+              href={link.url}
+            >
+              {link.name}
+            </Link>
           </CardContent>
         </Card>
       ))}

@@ -78,11 +78,6 @@ export default function CreatePage() {
     const text = isColorDark(data.background) ? "#FFF" : "#000";
     const slug = generateHash(8);
 
-    const linksWithName = data.links.map((link) => ({
-      ...link,
-      name: extractWebsiteName(link.url),
-    }));
-
     // create page
     const page = {
       text,
@@ -110,11 +105,17 @@ export default function CreatePage() {
       const { id: pageId } = rows[0];
 
       // create links
+
+      const links = data.links.map((link) => ({
+        ...link,
+        page_id: pageId,
+        name: extractWebsiteName(link.url),
+      }));
+
       const linksResponse = await fetch("/api/create-links", {
         method: "POST",
         body: JSON.stringify({
-          pageId,
-          links: linksWithName,
+          links,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -122,7 +123,7 @@ export default function CreatePage() {
       });
 
       if (linksResponse.ok) {
-        window.location.href = `/${slug}`;
+        window.location.href = `/pages`;
       }
     } catch (error) {
       console.log(error);

@@ -6,6 +6,7 @@ import { GeistSans } from "geist/font/sans";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Separator } from "../components/ui/separator";
+import { cn } from "../lib/utils";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,16 +21,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={GeistSans.className}>
-          <div className="flex w-full p-4 justify-between">
-            <Link href="/" className="font-semibold text-xl">
-              OneLnk
-            </Link>
-            <UserButton afterSignOutUrl="/" />
-          </div>
-          <Separator />
-          {children}
-        </body>
+        <body className={cn(GeistSans.className, "h-screen")}>{children}</body>
       </html>
     </ClerkProvider>
   );

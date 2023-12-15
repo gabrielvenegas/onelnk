@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export function Hero() {
   return (
-    <section className="w-full h-screen overflow-hidden flex flex-col justify-center items-center bg-gray-100 text-center px-4 py-12 md:px-6">
+    <div className="w-full h-screen flex flex-col justify-center items-center bg-gray-100 text-center px-4 md:px-6">
       <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 md:mb-8">
         OneLnk
       </h1>
@@ -20,6 +20,6 @@ export function Hero() {
           <Link href="/pages">Criar página</Link>
         </Button>
       </div>
-    </section>
+    </div>
   );
 }

@@ -6,4 +6,5 @@ export type Page = {
   text: string;
   user: string;
   slug: string;
+  createdAt: string;
 };
