@@ -25,7 +25,7 @@ export default async function Pages() {
         </Link>
       </div>
 
-      {rows.length > 0 && <Input placeholder="Pesquisar" />}
+      {/* {rows.length > 0 && <Input placeholder="Pesquisar" />} */}
 
       {rows.length === 0 && (
         <p className="text-gray-500 dark:text-gray-400">

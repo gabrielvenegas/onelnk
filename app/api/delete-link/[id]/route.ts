@@ -1,20 +1,16 @@
 import { NextResponse } from "next/server";
 import { createKysely } from "@vercel/postgres-kysely";
 
-export async function POST(request: Request) {
+export async function DELETE(request: Request) {
   try {
-    const body = await request.json();
+    const url = new URL(request.url);
+    const id = url.pathname.split("/")[3];
     const db = createKysely();
 
-    await db
-      // @ts-ignore
-      .insertInto("links")
-      .values(body.links)
-      .execute();
-
+    // @ts-ignore
+    await db.deleteFrom("links").where("id", "=", id).execute();
     return NextResponse.json({}, { status: 200 });
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ error }, { status: 500 });
   }
 }

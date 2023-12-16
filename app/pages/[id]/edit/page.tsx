@@ -10,25 +10,28 @@ import {
 } from "@/components/ui/form";
 import { Loader2, MinusCircleIcon, PlusIcon } from "lucide-react";
 import { extractWebsiteName, generateHash, isColorDark } from "@/lib/utils";
+import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
-import { CONSTANTS } from "../../../lib/constants";
+import { CONSTANTS } from "../../../../lib/constants";
 import ColorPicker from "@/components/ui/color-picker";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { sql } from "@vercel/postgres";
 import { useUser } from "@clerk/nextjs";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const formSchema = z.object({
+  id: z.string().optional(),
   title: z.string().min(3, CONSTANTS.required).max(50),
   description: z.string().min(3, CONSTANTS.required).max(100),
   background: z.string().min(3, CONSTANTS.required).max(100),
   text: z.string().optional(),
   links: z.array(
     z.object({
+      id: z.string().optional(),
       name: z.string().optional(),
       url: z
         .string()
@@ -39,9 +42,16 @@ const formSchema = z.object({
   ),
 });
 
-export default function CreatePage() {
+export default function EditPage({
+  params,
+}: {
+  params: {
+    id: string;
+  };
+}) {
   const { user } = useUser();
   const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: "onSubmit",
@@ -64,8 +74,16 @@ export default function CreatePage() {
     append({ name: "", url: "" });
   };
 
-  const onRemoveLink = (index: number) => {
+  const onRemoveLink = async (index: number) => {
     if (fields.length <= 0) return;
+
+    const item = form.getValues("links")[index];
+
+    if (item.id) {
+      await fetch(`/api/delete-link/${item.id}`, {
+        method: "DELETE",
+      });
+    }
 
     remove(index);
   };
@@ -75,44 +93,24 @@ export default function CreatePage() {
       setIsLoading(true);
       if (!user) return;
 
-      const { id } = user;
-
-      const text = isColorDark(data.background) ? "#FFF" : "#000";
-      const slug = generateHash(8);
-
-      // create page
-      const page = {
-        text,
-        slug,
-        userId: id,
-        title: data.title,
-        description: data.description,
-        background: data.background,
-      };
-
-      const res = await fetch("/api/create-page", {
-        method: "POST",
-        body: JSON.stringify(page),
+      await fetch("/api/update-page", {
+        method: "PUT",
+        body: JSON.stringify({
+          page: { ...data, id: params.id },
+        }),
         headers: {
           "Content-Type": "application/json",
         },
       });
 
-      const { result } = await res.json();
-
-      if (!result) return;
-
-      const { rows } = result;
-      const { id: pageId } = rows[0];
-
-      const links = data.links.map((link) => ({
+      const links = form.getValues("links").map((link: any) => ({
         ...link,
-        page_id: pageId,
-        name: extractWebsiteName(link.url),
+        name: link.name || extractWebsiteName(link.url),
+        page_id: link.page_id || params.id,
       }));
 
-      const linksResponse = await fetch("/api/create-links", {
-        method: "POST",
+      const linksResponse = await fetch("/api/update-links", {
+        method: "PUT",
         body: JSON.stringify({
           links,
         }),
@@ -131,9 +129,54 @@ export default function CreatePage() {
     }
   };
 
+  useEffect(() => {
+    if (!params.id || !user) return;
+
+    (async () => {
+      setIsLoading(true);
+
+      const pageResponse = await fetch(
+        `/api/get-page?id=${params.id}&userId=${user.id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const { result } = await pageResponse.json();
+
+      if (!result) return;
+
+      const { rows: pages } = result;
+
+      if (pages.length === 0) return;
+
+      const page = pages[0];
+
+      const linksResponse = await fetch(`/api/get-links?pageId=${page.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const { result: linksResult } = await linksResponse.json();
+
+      if (!linksResult) return;
+
+      const { rows: links } = linksResult;
+
+      form.reset({ ...page, links });
+
+      setIsLoading(false);
+    })();
+  }, [params.id]);
+
   return (
     <div className="flex flex-col p-4 space-y-4">
-      <h1 className="text-2xl font-bold">Nova página</h1>
+      <h1 className="text-2xl font-bold">Edição de página</h1>
 
       <Form {...form}>
         <form
@@ -241,7 +284,7 @@ export default function CreatePage() {
               disabled={isLoading}
             >
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {isLoading ? "Carregando..." : "Criar página"}
+              {isLoading ? "Carregando..." : "Salvar alterações"}
             </Button>
           </div>
         </form>
