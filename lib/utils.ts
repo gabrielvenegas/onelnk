@@ -51,7 +51,7 @@ export function extractWebsiteName(url: string): string {
   const urlObject = new URL(url);
 
   // Extract the hostname and split by '.' to remove the domain extension
-  let hostname = urlObject.hostname.split(".")[0];
+  let hostname = urlObject.hostname.replace("www.", "").split(".")[0];
 
   // Capitalize the first letter and return
   return hostname.charAt(0).toUpperCase() + hostname.slice(1);

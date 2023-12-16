@@ -1,6 +1,14 @@
 "use client";
 
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../../../../components/ui/dialog";
+import {
   Form,
   FormControl,
   FormField,
@@ -179,6 +187,7 @@ export default function EditPage({
       <h1 className="text-2xl font-bold">Edição de página</h1>
 
       <Form {...form}>
+        {/* <Dialog> */}
         <form
           className="space-y-4 pb-14"
           onSubmit={form.handleSubmit(onSubmit)}
@@ -192,6 +201,7 @@ export default function EditPage({
                 <FormControl>
                   <Input
                     placeholder="Ex.: Links oficiais - John Doe"
+                    disabled={isLoading}
                     {...field}
                   />
                 </FormControl>
@@ -210,6 +220,7 @@ export default function EditPage({
                   <Textarea
                     placeholder="Ex.: Links oficiais do John Doe"
                     className="w-full"
+                    disabled={isLoading}
                     {...field}
                   />
                 </FormControl>
@@ -275,13 +286,24 @@ export default function EditPage({
                 name={`links.${index}.url`}
                 render={({ field }) => (
                   <FormItem className="w-full">
+                    {/* {form.getValues(`links.${index}.name`) ? (
+                        <DialogTrigger className="font-semibold text-sm">
+                          {form.getValues(`links.${index}.name`)}
+                        </DialogTrigger>
+                      ) : (
+                        <DialogTrigger className="font-semibold text-sm">
+                          Definir nome
+                        </DialogTrigger>
+                      )} */}
                     <FormControl>
                       <Input
                         placeholder="Ex.: https://x.com/johndoeex"
                         autoCapitalize="off"
+                        disabled={isLoading}
                         {...field}
                       />
                     </FormControl>
+
                     <FormMessage />
                   </FormItem>
                 )}
@@ -305,6 +327,7 @@ export default function EditPage({
             </Button>
           </div>
         </form>
+        {/* </Dialog> */}
       </Form>
     </div>
   );
