@@ -1,4 +1,5 @@
-import { Avatar } from "../../../components/ui/avatar";
+import { Avatar, AvatarFallback } from "../../../components/ui/avatar";
+
 import Link from "next/link";
 import { LinkList } from "../../../components/link-list";
 import { Page } from "../../../models/page";
@@ -31,11 +32,11 @@ export default async function Links({
   return (
     <div
       style={{ backgroundColor: page.background, color: page.text }}
-      className="flex flex-col h-screen items-center p-4 md:p-8"
+      className="flex flex-col h-screen pt-32 md:pt-44 items-center px-4 md:px-8"
     >
-      <Avatar className="w-24 h-24 rounded-full mb-4" />
       <h1 className="text-2xl text-center font-semibold mb-4">{page.title}</h1>
       <p className="text-center mb-8">{page.description}</p>
+
       <LinkList {...page} />
 
       <div className="fixed inset-x-0 bottom-4 text-center">
@@ -45,7 +46,7 @@ export default async function Links({
           }}
           href="/"
         >
-          Crie o seu ONELNK agora mesmo
+          Crie o seu OneLnk
         </Link>
       </div>
     </div>

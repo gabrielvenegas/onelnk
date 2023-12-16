@@ -13,10 +13,10 @@ export function Hero() {
         OneLnk
       </h1>
       <p className="max-w-2xl text-lg sm:text-xl md:text-2xl text-gray-700 mb-6 md:mb-8 mx-auto">
-        Crie sua página de links personalizada e compartilhe onde quiser
+        Crie sua página de links agora mesmo!
       </p>
       <div className="flex flex-wrap justify-center gap-4">
-        <Button asChild>
+        <Button size="lg" className="text-base" asChild>
           <Link href="/pages">Criar página</Link>
         </Button>
       </div>

@@ -76,15 +76,12 @@ export default function CreatePage() {
       if (!user) return;
 
       const { id } = user;
-
-      const text = isColorDark(data.background) ? "#FFF" : "#000";
       const slug = generateHash(8);
 
-      // create page
       const page = {
-        text,
         slug,
         userId: id,
+        text: data.text,
         title: data.title,
         description: data.description,
         background: data.background,
@@ -184,6 +181,23 @@ export default function CreatePage() {
                 <FormControl>
                   <ColorPicker
                     color={field.value}
+                    onChange={(color) => field.onChange(color)}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="text"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Cor do texto</FormLabel>
+                <FormControl>
+                  <ColorPicker
+                    color={field.value || ""}
                     onChange={(color) => field.onChange(color)}
                   />
                 </FormControl>

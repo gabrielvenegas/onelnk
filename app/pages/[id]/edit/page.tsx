@@ -235,6 +235,23 @@ export default function EditPage({
             )}
           />
 
+          <FormField
+            control={form.control}
+            name="text"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Cor do texto</FormLabel>
+                <FormControl>
+                  <ColorPicker
+                    color={field.value || ""}
+                    onChange={(color) => field.onChange(color)}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <div className="flex flex-row justify-between">
             <h2 className="text-lg font-semibold">Links - {fields.length}/5</h2>
             <button type="button" onClick={onAddLink}>
