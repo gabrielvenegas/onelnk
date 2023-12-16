@@ -16,9 +16,7 @@ import { Button } from "@/components/ui/button";
 import { CONSTANTS } from "../../../lib/constants";
 import ColorPicker from "@/components/ui/color-picker";
 import { Input } from "@/components/ui/input";
-import { Page } from "../../../models/page";
 import { Textarea } from "@/components/ui/textarea";
-import { sql } from "@vercel/postgres";
 import { useUser } from "@clerk/nextjs";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -217,6 +215,7 @@ export default function CreatePage() {
                     <FormControl>
                       <Input
                         placeholder="Ex.: https://x.com/johndoeex"
+                        autoCapitalize="off"
                         {...field}
                       />
                     </FormControl>
