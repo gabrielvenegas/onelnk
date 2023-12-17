@@ -180,7 +180,7 @@ export default function EditPage({
 
       setIsLoading(false);
     })();
-  }, [params, params.id]);
+  }, [params, user, params.id]);
 
   return (
     <div className="flex flex-col p-4 space-y-4">
