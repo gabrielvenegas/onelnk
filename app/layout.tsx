@@ -1,12 +1,10 @@
 import "./globals.css";
 
-import { ClerkProvider, UserButton } from "@clerk/nextjs";
-
+import { ClerkProvider } from "@clerk/nextjs";
 import { GeistSans } from "geist/font/sans";
-import Link from "next/link";
 import type { Metadata } from "next";
-import { Separator } from "../components/ui/separator";
 import { cn } from "../lib/utils";
+import { ptBR } from "@clerk/localizations";
 
 export const metadata: Metadata = {
   title: "OneLnk",
@@ -19,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider localization={ptBR}>
       <html lang="en">
         <body className={cn(GeistSans.className, "h-screen")}>{children}</body>
       </html>
