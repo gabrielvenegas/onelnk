@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { sql } from "@vercel/postgres";
 
+export const dynamic = "force-dynamic";
+
+export const runtime = "edge";
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
