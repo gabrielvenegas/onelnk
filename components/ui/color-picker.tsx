@@ -32,17 +32,22 @@ export default function ColorPicker({
     "#FCCA46",
     "#A1C181",
     "#619B8A",
+    "#A3A380",
+    "#D6CE93",
+    "#EFEBCE",
+    "#D8A48F",
+    "#BB8588",
   ];
   return (
-    <div className="space-x-4 space-y-4 overflow-x-auto whitespace-nowrap">
+    <div className="space-x-4 space-y-4 pl-2 overflow-x-auto whitespace-nowrap">
       {COLORS.map((c) => (
         <button
           key={c}
           type="button"
           style={{ backgroundColor: c }}
-          className={`w-8 h-8 rounded-full mb-4 focus:outline-none transform transition-transform duration-200 hover:scale-125 ${
+          className={`w-8 h-8 rounded-full mb-4 focus:outline-none transform transition-transform duration-200 hover:scale-150 ${
             c === "#FFF" ? "border border-gray-300 dark:border-gray-700" : ""
-          } ${color === c ? "scale-125" : ""}`}
+          } ${color === c ? "scale-150" : ""}`}
           onClick={() => onChange(c)}
         />
       ))}

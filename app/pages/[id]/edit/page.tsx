@@ -16,7 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Loader2, MinusCircleIcon, PlusIcon } from "lucide-react";
+import { Loader2, MinusCircleIcon, PlusIcon, TrashIcon } from "lucide-react";
 import { extractWebsiteName, generateHash, isColorDark } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -113,7 +113,7 @@ export default function EditPage({
 
       const links = form.getValues("links").map((link: any) => ({
         ...link,
-        name: link.name || extractWebsiteName(link.url),
+        name: !link.name ? extractWebsiteName(link.url) : link.name,
         page_id: link.page_id || params.id,
       }));
 
@@ -180,14 +180,13 @@ export default function EditPage({
 
       setIsLoading(false);
     })();
-  }, [params.id]);
+  }, [params, params.id]);
 
   return (
     <div className="flex flex-col p-4 space-y-4">
       <h1 className="text-2xl font-bold">Edição de página</h1>
 
       <Form {...form}>
-        {/* <Dialog> */}
         <form
           className="space-y-4 pb-14"
           onSubmit={form.handleSubmit(onSubmit)}
@@ -278,39 +277,50 @@ export default function EditPage({
 
           {fields.map((field, index) => (
             <div
-              className="flex flex-row items-center space-x-4"
+              className="flex flex-col relative items-center space-y-2 bg-gray-100 rounded-lg p-3"
               key={field.id}
             >
+              <TrashIcon
+                onClick={() => onRemoveLink(index)}
+                className="absolute top-4 w-4 h-4 right-4"
+                color="red"
+              />
+
               <FormField
                 control={form.control}
                 name={`links.${index}.url`}
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    {/* {form.getValues(`links.${index}.name`) ? (
-                        <DialogTrigger className="font-semibold text-sm">
-                          {form.getValues(`links.${index}.name`)}
-                        </DialogTrigger>
-                      ) : (
-                        <DialogTrigger className="font-semibold text-sm">
-                          Definir nome
-                        </DialogTrigger>
-                      )} */}
+                    <FormLabel>URL do link</FormLabel>
+
                     <FormControl>
                       <Input
                         placeholder="Ex.: https://x.com/johndoeex"
                         autoCapitalize="off"
-                        disabled={isLoading}
+                        autoFocus
                         {...field}
                       />
                     </FormControl>
-
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <MinusCircleIcon
-                className="w-8 h-8 text-red-500 dark:text-red-500"
-                onClick={() => onRemoveLink(index)}
+              <FormField
+                control={form.control}
+                name={`links.${index}.name`}
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Nome do link (opcional)</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Ex.: Instagram"
+                        autoCapitalize="off"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
           ))}
@@ -327,7 +337,6 @@ export default function EditPage({
             </Button>
           </div>
         </form>
-        {/* </Dialog> */}
       </Form>
     </div>
   );
