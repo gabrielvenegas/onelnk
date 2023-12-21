@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server";
 import { createKysely } from "@vercel/postgres-kysely";
 
-export async function DELETE(request: Request) {
+export async function DELETE(
+  _: Request,
+  { params }: { params: { id: string } }
+) {
   try {
-    const url = new URL(request.url);
-    const id = url.pathname.split("/")[3];
+    const { id } = params;
     const db = createKysely();
 
     // @ts-ignore

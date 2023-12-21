@@ -5,10 +5,13 @@ export const dynamic = "force-dynamic";
 
 export const runtime = "edge";
 
-export async function GET(request: Request) {
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
   try {
+    const { id } = params;
     const { searchParams } = new URL(request.url);
-    const id = searchParams.get("id");
     const userId = searchParams.get("userId");
 
     const result =

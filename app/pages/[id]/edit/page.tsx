@@ -1,13 +1,7 @@
 "use client";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../../../../components/ui/dialog";
+// TODO - REFACTOR THIS
+
 import {
   Form,
   FormControl,
@@ -16,8 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Loader2, MinusCircleIcon, PlusIcon, TrashIcon } from "lucide-react";
-import { extractWebsiteName, generateHash, isColorDark } from "@/lib/utils";
+import { Loader2, PlusIcon, TrashIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
@@ -26,7 +19,7 @@ import { CONSTANTS } from "../../../../lib/constants";
 import ColorPicker from "@/components/ui/color-picker";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { sql } from "@vercel/postgres";
+import { extractWebsiteName } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,7 +27,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 const formSchema = z.object({
   id: z.string().optional(),
   title: z.string().min(3, CONSTANTS.required).max(50),
-  description: z.string().min(3, CONSTANTS.required).max(100),
+  description: z.string().optional(),
   background: z.string().min(3, CONSTANTS.required).max(100),
   text: z.string().optional(),
   links: z.array(
@@ -88,7 +81,7 @@ export default function EditPage({
     const item = form.getValues("links")[index];
 
     if (item.id) {
-      await fetch(`/api/delete-link/${item.id}`, {
+      await fetch(`/api/links/${item.id}/delete`, {
         method: "DELETE",
       });
     }
@@ -101,10 +94,10 @@ export default function EditPage({
       setIsLoading(true);
       if (!user) return;
 
-      await fetch("/api/update-page", {
+      await fetch(`/api/pages/${params.id}/update`, {
         method: "PUT",
         body: JSON.stringify({
-          page: { ...data, id: params.id },
+          page: { ...data },
         }),
         headers: {
           "Content-Type": "application/json",
@@ -117,7 +110,7 @@ export default function EditPage({
         page_id: link.page_id || params.id,
       }));
 
-      const linksResponse = await fetch("/api/update-links", {
+      const linksResponse = await fetch("/api/links/update", {
         method: "PUT",
         body: JSON.stringify({
           links,
@@ -132,7 +125,6 @@ export default function EditPage({
       }
     } catch (error) {
       console.log(error);
-    } finally {
       setIsLoading(false);
     }
   };
@@ -144,7 +136,7 @@ export default function EditPage({
       setIsLoading(true);
 
       const pageResponse = await fetch(
-        `/api/get-page?id=${params.id}&userId=${user.id}`,
+        `/api/pages/${params.id}?userId=${user.id}`,
         {
           method: "GET",
           headers: {
@@ -163,7 +155,7 @@ export default function EditPage({
 
       const page = pages[0];
 
-      const linksResponse = await fetch(`/api/get-links?pageId=${page.id}`, {
+      const linksResponse = await fetch(`/api/links/list?pageId=${page.id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

@@ -22,7 +22,7 @@ export default function PageCard({ id, title, description, slug }: Page) {
   const removePage = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(`/api/delete-page/${id}`, {
+      const response = await fetch(`/api/pages/${id}/delete`, {
         method: "DELETE",
       });
 

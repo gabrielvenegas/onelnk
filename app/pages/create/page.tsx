@@ -15,7 +15,7 @@ import {
   PlusIcon,
   TrashIcon,
 } from "lucide-react";
-import { extractWebsiteName, generateHash, isColorDark } from "@/lib/utils";
+import { extractWebsiteName, generateHash } from "@/lib/utils";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
@@ -30,7 +30,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 const formSchema = z.object({
   title: z.string().min(3, CONSTANTS.required).max(50),
-  description: z.string().min(3, CONSTANTS.required).max(100),
+  description: z.string().optional(),
   background: z.string().min(3, CONSTANTS.required).max(100),
   text: z.string().optional(),
   links: z.array(
@@ -93,7 +93,7 @@ export default function CreatePage() {
         background: data.background,
       };
 
-      const res = await fetch("/api/create-page", {
+      const res = await fetch("/api/pages/create", {
         method: "POST",
         body: JSON.stringify(page),
         headers: {
@@ -114,7 +114,7 @@ export default function CreatePage() {
         name: !link.name ? extractWebsiteName(link.url) : link.name,
       }));
 
-      const linksResponse = await fetch("/api/create-links", {
+      const linksResponse = await fetch("/api/links/create", {
         method: "POST",
         body: JSON.stringify({
           links,
@@ -129,7 +129,6 @@ export default function CreatePage() {
       }
     } catch (error) {
       console.log(error);
-    } finally {
       setIsLoading(false);
     }
   };

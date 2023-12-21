@@ -1,13 +1,15 @@
 import { NextResponse } from "next/server";
 import { createKysely } from "@vercel/postgres-kysely";
-import { sql } from "@vercel/postgres";
 
-export async function PUT(request: Request) {
+export async function PUT(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
   try {
     const body = await request.json();
     const db = createKysely();
 
-    const { links, id, ...page } = body.page;
+    const { links, ...page } = body.page;
 
     await db
       // @ts-ignore
@@ -19,7 +21,7 @@ export async function PUT(request: Request) {
         text: page.text,
       })
       // @ts-ignore
-      .where("id", "=", id)
+      .where("id", "=", params.id)
       .execute();
     return NextResponse.json({}, { status: 200 });
   } catch (error) {
