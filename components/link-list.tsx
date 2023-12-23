@@ -19,7 +19,7 @@ export async function LinkList({ id, text, background }: Page) {
           style={{ color: text }}
           className="flex flex-col w-full items-center text-center"
           target="_blank"
-          href={link.url}
+          href={`/api/links/${link.id}/redirect?redirectUrl=${link.url}`}
         >
           <Card
             key={link.id}

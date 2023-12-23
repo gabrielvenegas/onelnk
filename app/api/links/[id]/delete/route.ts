@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { createKysely } from "@vercel/postgres-kysely";
 
 export async function DELETE(
-  request: Request,
+  _: Request,
   { params }: { params: { id: string } }
 ) {
   try {

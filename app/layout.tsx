@@ -17,7 +17,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider localization={ptBR}>
+    <ClerkProvider
+      localization={{
+        ...ptBR,
+        formFieldLabel__emailAddress: "Email",
+        formFieldLabel__password: "Senha",
+        formButtonPrimary: "Entrar",
+        signIn: {
+          start: {
+            title: "Login",
+            subtitle: "para continuar para o OneLnk",
+          },
+        },
+      }}
+    >
       <html lang="en">
         <body className={cn(GeistSans.className, "h-screen")}>{children}</body>
       </html>

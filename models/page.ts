@@ -7,4 +7,5 @@ export type Page = {
   user: string;
   slug: string;
   createdAt: string;
+  clicks: number;
 };
