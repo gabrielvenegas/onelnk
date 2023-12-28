@@ -57,7 +57,6 @@ export default function PageCard({
         </CardDescription>
 
         <CardDescription className="text-sm text-gray-500 dark:text-gray-400">
-          URL:{" "}
           <Link
             href={`${process.env.NEXT_PUBLIC_VERCEL_URL}/to/${slug}`}
             className="text-blue-500 hover:text-blue-700 dark:text-blue-300 dark:hover:text-blue-500"

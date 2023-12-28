@@ -8,13 +8,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Loader2,
-  MinusCircleIcon,
-  MinusIcon,
-  PlusIcon,
-  TrashIcon,
-} from "lucide-react";
+import { Loader2, PlusIcon, TrashIcon } from "lucide-react";
 import { extractWebsiteName, generateHash } from "@/lib/utils";
 import { useFieldArray, useForm } from "react-hook-form";
 
@@ -185,7 +179,7 @@ export default function CreatePage() {
                 <FormLabel>Cor de fundo</FormLabel>
                 <FormControl>
                   <ColorPicker
-                    color={field.value}
+                    selectedColor={field.value}
                     onChange={(color) => field.onChange(color)}
                   />
                 </FormControl>
@@ -202,7 +196,7 @@ export default function CreatePage() {
                 <FormLabel>Cor do texto</FormLabel>
                 <FormControl>
                   <ColorPicker
-                    color={field.value || ""}
+                    selectedColor={field.value || ""}
                     onChange={(color) => field.onChange(color)}
                   />
                 </FormControl>

@@ -11,7 +11,7 @@ export default function PagesLayout({
 }) {
   return (
     <main className="h-screen">
-      <div className="flex w-full p-4 justify-between">
+      <div className="flex w-full py-2 px-4 justify-between">
         <Link href="/" className="font-semibold text-xl">
           OneLnk
         </Link>
@@ -19,6 +19,7 @@ export default function PagesLayout({
           <UserButton afterSignOutUrl="/" />
         </Suspense>
       </div>
+
       <Separator />
 
       {children}

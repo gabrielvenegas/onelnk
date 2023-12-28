@@ -25,9 +25,9 @@ export default async function Pages() {
   return (
     <div className="flex flex-col p-4 space-y-4">
       <div className="flex flex-row justify-between items-center">
-        <h1 className="text-2xl font-bold">Minhas páginas</h1>
+        <h1 className="text-xl font-bold">Minhas páginas</h1>
         <Link href="/pages/create">
-          <PlusIcon className="w-8 h-8 text-black dark:text-black" />
+          <PlusIcon className="w-7 h-7 text-black dark:text-black" />
         </Link>
       </div>
 

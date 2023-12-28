@@ -1,7 +1,5 @@
 "use client";
 
-// TODO - REFACTOR THIS
-
 import {
   Form,
   FormControl,
@@ -11,11 +9,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Loader2, PlusIcon, TrashIcon } from "lucide-react";
+import { fetchLinksData, updateLinks } from "@/services/links";
+import { fetchPageData, updatePage } from "@/services/page";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/button";
-import { CONSTANTS } from "../../../../lib/constants";
+import { CONSTANTS } from "@/lib/constants";
 import ColorPicker from "@/components/ui/color-picker";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -52,6 +53,37 @@ export default function EditPage({
 }) {
   const { user } = useUser();
   const [isLoading, setIsLoading] = useState(false);
+
+  const { data: page } = useQuery({
+    queryKey: ["page"],
+    queryFn: () => fetchPageData(params.id, user?.id),
+    enabled: !!user,
+    select: (data) => data?.result?.rows[0],
+  });
+
+  const { data: links } = useQuery({
+    queryKey: ["links"],
+    queryFn: () => fetchLinksData(params.id),
+    enabled: !!page,
+    select: (data) => data?.result?.rows,
+  });
+
+  const { mutateAsync: updatePageMutate } = useMutation({
+    mutationKey: ["page"],
+    mutationFn: (data: z.infer<typeof formSchema>) => updatePage(data),
+  });
+
+  const { mutate: updateLinksMutate } = useMutation({
+    mutationKey: ["links"],
+    mutationFn: ({
+      links,
+    }: {
+      links: z.infer<typeof formSchema>["links"][number][];
+    }) => updateLinks(links),
+    onSuccess: () => {
+      window.location.href = `/pages`;
+    },
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -90,19 +122,12 @@ export default function EditPage({
   };
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    if (!user) return;
+
     try {
       setIsLoading(true);
-      if (!user) return;
 
-      await fetch(`/api/pages/${params.id}/update`, {
-        method: "PUT",
-        body: JSON.stringify({
-          page: { ...data },
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      await updatePageMutate(data);
 
       const links = form.getValues("links").map((link: any) => ({
         ...link,
@@ -110,73 +135,23 @@ export default function EditPage({
         page_id: link.page_id || params.id,
       }));
 
-      const linksResponse = await fetch("/api/links/update", {
-        method: "PUT",
-        body: JSON.stringify({
-          links,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
+      updateLinksMutate({
+        links,
       });
-
-      if (linksResponse.ok) {
-        window.location.href = `/pages`;
-      }
     } catch (error) {
-      console.log(error);
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    if (!params.id || !user) return;
+    if (!page || !links) return;
 
-    (async () => {
-      setIsLoading(true);
-
-      const pageResponse = await fetch(
-        `/api/pages/${params.id}?userId=${user.id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const { result } = await pageResponse.json();
-
-      if (!result) return;
-
-      const { rows: pages } = result;
-
-      if (pages.length === 0) return;
-
-      const page = pages[0];
-
-      const linksResponse = await fetch(`/api/links/list?pageId=${page.id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const { result: linksResult } = await linksResponse.json();
-
-      if (!linksResult) return;
-
-      const { rows: links } = linksResult;
-
-      form.reset({ ...page, links });
-
-      setIsLoading(false);
-    })();
-  }, [params, user, params.id]);
+    form.reset({ ...page, links });
+  }, [page, links]);
 
   return (
     <div className="flex flex-col p-4 space-y-4">
-      <h1 className="text-2xl font-bold">Edição de página</h1>
+      <h1 className="text-xl font-bold">Edição de página</h1>
 
       <Form {...form}>
         <form
@@ -228,7 +203,7 @@ export default function EditPage({
                 <FormLabel>Cor de fundo</FormLabel>
                 <FormControl>
                   <ColorPicker
-                    color={field.value}
+                    selectedColor={field.value}
                     onChange={(color) => field.onChange(color)}
                   />
                 </FormControl>
@@ -245,7 +220,7 @@ export default function EditPage({
                 <FormLabel>Cor do texto</FormLabel>
                 <FormControl>
                   <ColorPicker
-                    color={field.value || ""}
+                    selectedColor={field.value || ""}
                     onChange={(color) => field.onChange(color)}
                   />
                 </FormControl>
