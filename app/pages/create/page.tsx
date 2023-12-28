@@ -8,13 +8,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { Loader2, PlusIcon, TrashIcon } from "lucide-react";
 import { extractWebsiteName, generateHash } from "@/lib/utils";
-import { useFieldArray, useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { CONSTANTS } from "../../../lib/constants";
 import ColorPicker from "@/components/ui/color-picker";
+import DraggableLinks from "../components/draggable-links";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
@@ -29,7 +30,9 @@ const formSchema = z.object({
   text: z.string().optional(),
   links: z.array(
     z.object({
+      id: z.string().optional(),
       name: z.string().optional(),
+      position: z.number().optional(),
       url: z
         .string()
         .min(3, CONSTANTS.required)
@@ -38,6 +41,8 @@ const formSchema = z.object({
     })
   ),
 });
+
+export type PageForm = z.infer<typeof formSchema>;
 
 export default function CreatePage() {
   const { user } = useUser();
@@ -61,7 +66,12 @@ export default function CreatePage() {
   const onAddLink = () => {
     if (fields.length >= 5) return;
 
-    append({ name: "", url: "" });
+    append({
+      id: fields.length.toString(),
+      position: fields.length,
+      name: "",
+      url: "",
+    });
   };
 
   const onRemoveLink = (index: number) => {
@@ -129,7 +139,7 @@ export default function CreatePage() {
 
   return (
     <div className="flex flex-col p-4 space-y-4">
-      <h1 className="text-2xl font-bold">Nova página</h1>
+      <h1 className="text-xl font-bold">Nova página</h1>
 
       <Form {...form}>
         <form
@@ -218,55 +228,7 @@ export default function CreatePage() {
             </p>
           )}
 
-          {fields.map((field, index) => (
-            <div
-              className="flex flex-col relative items-center space-y-2 bg-gray-100 rounded-lg p-3"
-              key={field.id}
-            >
-              <TrashIcon
-                onClick={() => onRemoveLink(index)}
-                className="absolute top-4 w-4 h-4 right-4"
-                color="red"
-              />
-
-              <FormField
-                control={form.control}
-                name={`links.${index}.url`}
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>URL do link</FormLabel>
-
-                    <FormControl>
-                      <Input
-                        placeholder="Ex.: https://x.com/johndoeex"
-                        autoCapitalize="off"
-                        autoFocus
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`links.${index}.name`}
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>Nome do link (opcional)</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Ex.: Instagram"
-                        autoCapitalize="off"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          ))}
+          <DraggableLinks onRemoveLink={onRemoveLink} />
 
           <div className="fixed inset-x-0 bottom-0">
             <Button
