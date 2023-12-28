@@ -8,7 +8,8 @@ import { ptBR } from "@clerk/localizations";
 
 export const metadata: Metadata = {
   title: "OneLnk",
-  description: "OneLnk is a free and open source linktree alternative.",
+  description:
+    "OneLnk é uma plataforma de links personalizados, open-source e uma alternativa ao Linktree.",
 };
 
 export default function RootLayout({
@@ -20,13 +21,23 @@ export default function RootLayout({
     <ClerkProvider
       localization={{
         ...ptBR,
-        formFieldLabel__emailAddress: "Email",
+        formFieldLabel__emailAddress: "E-mail",
         formFieldLabel__password: "Senha",
         formButtonPrimary: "Entrar",
         signIn: {
           start: {
-            title: "Login",
-            subtitle: "para continuar para o OneLnk",
+            title: "Entre na sua conta",
+            subtitle: "para continuar usando o OneLnk",
+            actionText: "Não tem uma conta? ",
+            actionLink: "Crie uma",
+          },
+        },
+        signUp: {
+          start: {
+            title: "Crie sua conta",
+            subtitle: "para começar a usar o OneLnk",
+            actionText: "Já tem uma conta? ",
+            actionLink: "Entre",
           },
         },
       }}
