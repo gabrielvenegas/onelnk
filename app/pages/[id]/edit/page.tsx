@@ -54,14 +54,14 @@ export default function EditPage({
   const { user } = useUser();
   const [isLoading, setIsLoading] = useState(false);
 
-  const { data: page } = useQuery({
+  const { data: page, isLoading: isPageLoading } = useQuery({
     queryKey: ["page"],
     queryFn: () => fetchPageData(params.id, user?.id),
     enabled: !!user,
     select: (data) => data?.result?.rows[0],
   });
 
-  const { data: links } = useQuery({
+  const { data: links, isLoading: isLinksLoading } = useQuery({
     queryKey: ["links"],
     queryFn: () => fetchLinksData(params.id),
     enabled: !!page,
@@ -297,10 +297,16 @@ export default function EditPage({
               className="rounded-none w-full text-base h-14"
               size="lg"
               type="submit"
-              disabled={isLoading}
+              disabled={isPageLoading || isLoading || isLinksLoading}
             >
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {isLoading ? "Carregando..." : "Salvar alterações"}
+              {isPageLoading ||
+                isLoading ||
+                (isLinksLoading && (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ))}
+              {isPageLoading || isLoading || isLinksLoading
+                ? "Carregando..."
+                : "Salvar alterações"}
             </Button>
           </div>
         </form>
