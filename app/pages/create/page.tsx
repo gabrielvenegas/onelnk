@@ -13,11 +13,13 @@ import { extractWebsiteName, generateHash } from "@/lib/utils";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
-import { CONSTANTS } from "../../../lib/constants";
+import { CONSTANTS } from "@/lib/constants";
 import ColorPicker from "@/components/ui/color-picker";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
 import { useUser } from "@clerk/nextjs";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -41,6 +43,9 @@ const formSchema = z.object({
 
 export default function CreatePage() {
   const { user } = useUser();
+  const { toast } = useToast();
+  const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -118,18 +123,22 @@ export default function CreatePage() {
         },
       });
 
+      toast({
+        title: "Página criada com sucesso!",
+        duration: 1500,
+      });
+
       if (linksResponse.ok) {
-        window.location.href = `/pages`;
+        router.back();
       }
     } catch (error) {
-      console.log(error);
       setIsLoading(false);
     }
   };
 
   return (
     <div className="flex flex-col p-4 space-y-4">
-      <h1 className="text-2xl font-bold">Nova página</h1>
+      <h1 className="text-xl font-bold">Nova página</h1>
 
       <Form {...form}>
         <form

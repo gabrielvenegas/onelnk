@@ -1,7 +1,5 @@
 import Link from "next/link";
-import { Loader2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { Suspense } from "react";
 import { UserButton } from "@clerk/nextjs";
 
 export default function PagesLayout({
@@ -11,13 +9,12 @@ export default function PagesLayout({
 }) {
   return (
     <main className="h-screen">
-      <div className="flex w-full py-2 px-4 justify-between">
+      <div className="flex w-full h-[6%] pt-4 px-4 justify-between">
         <Link href="/" className="font-semibold text-xl">
           OneLnk
         </Link>
-        <Suspense fallback={<Loader2 className="mr-2 h-4 w-4 animate-spin" />}>
-          <UserButton afterSignOutUrl="/" />
-        </Suspense>
+
+        <UserButton afterSignOutUrl="/" />
       </div>
 
       <Separator />

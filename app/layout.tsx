@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import Providers from "./providers";
+import { Toaster } from "@/components/ui/toaster";
 import { cn } from "../lib/utils";
 import { ptBR } from "@clerk/localizations";
 
@@ -46,6 +47,7 @@ export default function RootLayout({
       <html lang="en">
         <body className={cn(GeistSans.className, "h-screen")}>
           <Providers>{children}</Providers>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>

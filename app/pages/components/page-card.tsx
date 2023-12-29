@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { type Page } from "../../../models/page";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 
@@ -67,7 +67,7 @@ export default function PageCard({
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-row justify-between items-center space-x-2">
-        <div className="space-x-2">
+        <div className="flex space-x-2">
           <Button size="sm" asChild>
             <Link href={`/pages/${id}/edit`}> Editar</Link>
           </Button>

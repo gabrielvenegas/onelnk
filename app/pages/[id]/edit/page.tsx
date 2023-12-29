@@ -21,6 +21,8 @@ import ColorPicker from "@/components/ui/color-picker";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { extractWebsiteName } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { useToast } from "../../../../components/ui/use-toast";
 import { useUser } from "@clerk/nextjs";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -52,20 +54,24 @@ export default function EditPage({
   };
 }) {
   const { user } = useUser();
-  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+  const { back } = useRouter();
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const { data: page, isLoading: isPageLoading } = useQuery({
-    queryKey: ["page"],
+    queryKey: ["page", params.id],
     queryFn: () => fetchPageData(params.id, user?.id),
     enabled: !!user,
     select: (data) => data?.result?.rows[0],
   });
 
   const { data: links, isLoading: isLinksLoading } = useQuery({
-    queryKey: ["links"],
+    queryKey: ["links", params.id, page?.links],
     queryFn: () => fetchLinksData(params.id),
     enabled: !!page,
     select: (data) => data?.result?.rows,
+    staleTime: 0,
   });
 
   const { mutateAsync: updatePageMutate } = useMutation({
@@ -81,9 +87,18 @@ export default function EditPage({
       links: z.infer<typeof formSchema>["links"][number][];
     }) => updateLinks(links),
     onSuccess: () => {
-      window.location.href = `/pages`;
+      setIsLoading(false);
+
+      toast({
+        title: "Página atualizada com sucesso",
+        duration: 1500,
+      });
+
+      back();
     },
   });
+
+  const loading = isLoading || isPageLoading || isLinksLoading;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -110,15 +125,32 @@ export default function EditPage({
   const onRemoveLink = async (index: number) => {
     if (fields.length <= 0) return;
 
-    const item = form.getValues("links")[index];
+    try {
+      setIsLoading(true);
 
-    if (item.id) {
-      await fetch(`/api/links/${item.id}/delete`, {
-        method: "DELETE",
+      const item = form.getValues("links")[index];
+
+      if (item.id) {
+        await fetch(`/api/links/${item.id}/delete`, {
+          method: "DELETE",
+        });
+      }
+
+      toast({
+        title: "Link removido com sucesso!",
+        duration: 1500,
       });
-    }
 
-    remove(index);
+      remove(index);
+    } catch (err) {
+      toast({
+        title: "Erro ao remover link!",
+        duration: 1500,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
@@ -139,13 +171,18 @@ export default function EditPage({
         links,
       });
     } catch (error) {
-      setIsLoading(false);
+      toast({
+        title: "Erro ao atualizar página",
+        duration: 1500,
+        variant: "destructive",
+      });
     }
   };
 
   useEffect(() => {
     if (!page || !links) return;
 
+    setIsLoading(false);
     form.reset({ ...page, links });
   }, [page, links]);
 
@@ -167,8 +204,8 @@ export default function EditPage({
                 <FormControl>
                   <Input
                     placeholder="Ex.: Links oficiais - John Doe"
-                    disabled={isLoading}
                     {...field}
+                    disabled={loading}
                   />
                 </FormControl>
                 <FormMessage />
@@ -186,8 +223,8 @@ export default function EditPage({
                   <Textarea
                     placeholder="Ex.: Links oficiais do John Doe"
                     className="w-full"
-                    disabled={isLoading}
                     {...field}
+                    disabled={loading}
                   />
                 </FormControl>
                 <FormMessage />
@@ -205,6 +242,7 @@ export default function EditPage({
                   <ColorPicker
                     selectedColor={field.value}
                     onChange={(color) => field.onChange(color)}
+                    disabled={loading}
                   />
                 </FormControl>
                 <FormMessage />
@@ -222,6 +260,7 @@ export default function EditPage({
                   <ColorPicker
                     selectedColor={field.value || ""}
                     onChange={(color) => field.onChange(color)}
+                    disabled={loading}
                   />
                 </FormControl>
                 <FormMessage />
@@ -238,7 +277,7 @@ export default function EditPage({
 
           {fields.length === 0 && (
             <p className="text-gray-500 dark:text-gray-400">
-              Nenhum link adicionado
+              {loading ? "Carregando" : "Nenhum link adicionado"}
             </p>
           )}
 
@@ -247,12 +286,19 @@ export default function EditPage({
               className="flex flex-col relative items-center space-y-2 bg-gray-100 rounded-lg p-3"
               key={field.id}
             >
-              <TrashIcon
-                onClick={() => onRemoveLink(index)}
-                className="absolute top-4 w-4 h-4 right-4"
-                color="red"
-              />
-
+              {loading && (
+                <Loader2
+                  className="absolute top-4 w-4 h-4 right-4 animate-spin"
+                  color="red"
+                />
+              )}
+              {!loading && (
+                <TrashIcon
+                  onClick={() => onRemoveLink(index)}
+                  className="absolute top-4 w-4 h-4 right-4"
+                  color="red"
+                />
+              )}
               <FormField
                 control={form.control}
                 name={`links.${index}.url`}
@@ -264,8 +310,8 @@ export default function EditPage({
                       <Input
                         placeholder="Ex.: https://x.com/johndoeex"
                         autoCapitalize="off"
-                        autoFocus
                         {...field}
+                        disabled={loading}
                       />
                     </FormControl>
                     <FormMessage />
@@ -283,6 +329,7 @@ export default function EditPage({
                         placeholder="Ex.: Instagram"
                         autoCapitalize="off"
                         {...field}
+                        disabled={loading}
                       />
                     </FormControl>
                     <FormMessage />
@@ -297,16 +344,10 @@ export default function EditPage({
               className="rounded-none w-full text-base h-14"
               size="lg"
               type="submit"
-              disabled={isPageLoading || isLoading || isLinksLoading}
+              disabled={loading}
             >
-              {isPageLoading ||
-                isLoading ||
-                (isLinksLoading && (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ))}
-              {isPageLoading || isLoading || isLinksLoading
-                ? "Carregando..."
-                : "Salvar alterações"}
+              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {loading ? "Carregando" : "Salvar alterações"}
             </Button>
           </div>
         </form>

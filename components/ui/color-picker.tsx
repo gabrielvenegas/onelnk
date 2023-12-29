@@ -4,9 +4,11 @@ import { isColorDark } from "../../lib/utils";
 export default function ColorPicker({
   selectedColor,
   onChange,
+  disabled = false,
 }: {
   selectedColor: string;
   onChange: (selectedColor: string) => void;
+  disabled?: boolean;
 }) {
   const COLORS = [
     // black slight variation
@@ -42,6 +44,19 @@ export default function ColorPicker({
     "#D8A48F",
     "#BB8588",
   ];
+
+  if (disabled) {
+    return (
+      <div className="space-x-4 space-y-4 pl-2 overflow-x-auto whitespace-nowrap">
+        {COLORS.map((_, i) => (
+          <div key={i} className="relative inline-block">
+            <button className="w-8 h-8 animate-pulse bg-gray-200 rounded-full mb-4 focus:outline-none border" />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="space-x-4 space-y-4 pl-2 overflow-x-auto whitespace-nowrap">
       {COLORS.map((c) => (
@@ -59,7 +74,6 @@ export default function ColorPicker({
               className={`absolute w-5 h-5 top-1.5 left-1.5 ${
                 isColorDark(selectedColor) ? "text-white" : "text-black"
               }`}
-              // You can adjust the top and left values for proper placement
             />
           )}
         </div>
