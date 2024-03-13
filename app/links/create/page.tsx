@@ -37,7 +37,7 @@ const formSchema = z.object({
         .min(3, CONSTANTS.required)
         .max(100)
         .url(CONSTANTS.invalidUrl),
-    })
+    }),
   ),
 });
 
@@ -137,7 +137,7 @@ export default function CreatePage() {
   };
 
   return (
-    <div className="flex flex-col p-4 space-y-4">
+    <div className="flex flex-col space-y-4 p-4">
       <h1 className="text-xl font-bold">Nova página</h1>
 
       <Form {...form}>
@@ -217,7 +217,7 @@ export default function CreatePage() {
           <div className="flex flex-row justify-between">
             <h2 className="text-lg font-semibold">Links - {fields.length}/5</h2>
             <button type="button" onClick={onAddLink}>
-              <PlusIcon className="w-8 h-8 text-black dark:text-black" />
+              <PlusIcon className="h-8 w-8 text-black dark:text-black" />
             </button>
           </div>
 
@@ -229,12 +229,12 @@ export default function CreatePage() {
 
           {fields.map((field, index) => (
             <div
-              className="flex flex-col relative items-center space-y-2 bg-gray-100 rounded-lg p-3"
+              className="relative flex flex-col items-center space-y-2 rounded-lg bg-gray-100 p-3"
               key={field.id}
             >
               <TrashIcon
                 onClick={() => onRemoveLink(index)}
-                className="absolute top-4 w-4 h-4 right-4"
+                className="absolute right-4 top-4 h-4 w-4"
                 color="red"
               />
 
@@ -279,7 +279,7 @@ export default function CreatePage() {
 
           <div className="fixed inset-x-0 bottom-0">
             <Button
-              className="rounded-none w-full text-base h-14"
+              className="h-14 w-full rounded-none text-base"
               size="lg"
               type="submit"
               disabled={isLoading}

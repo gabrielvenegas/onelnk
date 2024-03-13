@@ -13,7 +13,7 @@ export default async function Pages() {
   }
 
   const { rows } = await sql<Page>`
-      SELECT 
+      SELECT
         p.*,
         COUNT(a.*) as "clicks"
       FROM public."pages" as p
@@ -23,11 +23,11 @@ export default async function Pages() {
       GROUP BY p.id, p.text, p.slug, p."user";`;
 
   return (
-    <div className="flex flex-col p-4 space-y-4">
-      <div className="flex flex-row justify-between items-center">
+    <div className="flex flex-col space-y-4 p-4">
+      <div className="flex flex-row items-center justify-between">
         <h1 className="text-xl font-bold">Minhas páginas</h1>
-        <Link href="/pages/create">
-          <PlusIcon className="w-7 h-7 text-black dark:text-black" />
+        <Link href="/links/create">
+          <PlusIcon className="h-7 w-7 text-black dark:text-black" />
         </Link>
       </div>
 

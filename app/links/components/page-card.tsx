@@ -25,7 +25,7 @@ export default function PageCard({
   const { refresh } = useRouter();
   const url = process.env.NEXT_PUBLIC_VERCEL_URL?.toString().replace(
     /^(https?:\/\/)/,
-    ""
+    "",
   );
   const [isLoading, setIsLoading] = useState(false);
 
@@ -66,14 +66,14 @@ export default function PageCard({
           </Link>
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-row justify-between items-center space-x-2">
+      <CardContent className="flex flex-row items-center justify-between space-x-2">
         <div className="flex space-x-2">
           <Button size="sm" asChild>
-            <Link href={`/pages/${id}/edit`}> Editar</Link>
+            <Link href={`/links/${id}/edit`}> Editar</Link>
           </Button>
           <Button
             variant="outline"
-            className="text-red-500 hover:bg-red-100 hover:border-red-100 hover:text-red-700 dark:hover:bg-red-700 dark:hover:text-red-300"
+            className="text-red-500 hover:border-red-100 hover:bg-red-100 hover:text-red-700 dark:hover:bg-red-700 dark:hover:text-red-300"
             size="sm"
             onClick={removePage}
             disabled={isLoading}
@@ -84,7 +84,7 @@ export default function PageCard({
         </div>
 
         <div className="flex flex-row items-center">
-          <span className="text-[#a2a2a2] text-sm">
+          <span className="text-sm text-[#a2a2a2]">
             {clicks} {clicks > 1 ? "cliques" : "clique"}
           </span>
         </div>
