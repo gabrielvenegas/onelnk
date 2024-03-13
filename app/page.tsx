@@ -4,8 +4,11 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { GeistSans } from "geist/font/sans";
+import { currentUser } from "@clerk/nextjs/server";
 
-export default function Home() {
+export default async function Home() {
+  const user = await currentUser();
+
   return (
     <>
       <div className="fixed inset-0 z-0 transition-colors duration-500" />
@@ -18,7 +21,11 @@ export default function Home() {
         <header className="m-auto max-w-screen-xl py-4">
           <div className="flex flex-1 flex-row items-center justify-between">
             <h1 className="text-2xl font-semibold">OneLnk</h1>
-            <Link href="/login">Fazer login</Link>
+            {!user ? (
+              <Link href="/login">Fazer login</Link>
+            ) : (
+              <Link href="/links">Dashboard</Link>
+            )}
           </div>
         </header>
 
