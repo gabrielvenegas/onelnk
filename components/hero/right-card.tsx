@@ -1,13 +1,8 @@
 "use client";
 
-import { Tilt } from "react-tilt";
+import Tilt from "react-parallax-tilt";
 import useColorSwitcher from "@/app/_hooks/useColorSwitcher";
 import { Button } from "../ui/button";
-
-const tiltOptions = {
-  speed: 1500,
-  easing: "cubic-bezier(0.25, 0.1, 0.25, 1)",
-};
 
 export default function RightCard() {
   const fakeLinks = [1, 2, 3, 4];
@@ -16,9 +11,16 @@ export default function RightCard() {
   } = useColorSwitcher();
 
   return (
-    <Tilt options={tiltOptions} style={{ height: 650, width: 380 }}>
+    <Tilt
+      className="background-stripes parallax-effect-glare-scale"
+      perspective={900}
+      glareEnable={true}
+      glareMaxOpacity={0.45}
+      scale={1.02}
+      style={{ height: 650, width: 380 }}
+    >
       <div
-        className="flex h-full flex-1 flex-col justify-center rounded bg-white p-4 shadow-lg transition-colors duration-500"
+        className="inner-element flex h-full flex-1 flex-col justify-center rounded bg-white p-4 shadow-lg transition-colors duration-500"
         style={{
           backgroundColor: primary,
           color: secondary,
