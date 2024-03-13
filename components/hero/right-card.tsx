@@ -4,6 +4,11 @@ import { Tilt } from "react-tilt";
 import useColorSwitcher from "@/app/_hooks/useColorSwitcher";
 import { Button } from "../ui/button";
 
+const tiltOptions = {
+  speed: 1500,
+  easing: "cubic-bezier(0.25, 0.1, 0.25, 1)",
+};
+
 export default function RightCard() {
   const fakeLinks = [1, 2, 3, 4];
   const {
@@ -11,7 +16,7 @@ export default function RightCard() {
   } = useColorSwitcher();
 
   return (
-    <Tilt style={{ height: 650, width: 380 }}>
+    <Tilt options={tiltOptions} style={{ height: 650, width: 380 }}>
       <div
         className="flex h-full flex-1 flex-col justify-center rounded bg-white p-4 shadow-lg transition-colors duration-500"
         style={{
