@@ -66,7 +66,7 @@ export default async function Home() {
           </div>
         </main>
 
-        <footer className="m-auto max-w-screen-xl py-4">
+        <footer className="m-auto max-w-screen-2xl py-4">
           <div className="flex flex-1 flex-row items-center justify-between">
             <h1>OneLnk©️ 2024 - Todos os direitos reservados</h1>
           </div>
