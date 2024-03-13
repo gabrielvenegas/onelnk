@@ -18,7 +18,7 @@ export default async function Home() {
           "relative z-10 h-screen w-full transition-colors duration-500",
         )}
       >
-        <header className="m-auto max-w-screen-xl py-4">
+        <header className="m-auto max-w-screen-2xl py-4">
           <div className="flex flex-1 flex-row items-center justify-between">
             <h1 className="text-2xl font-semibold">OneLnk</h1>
             {!user ? (
@@ -29,7 +29,7 @@ export default async function Home() {
           </div>
         </header>
 
-        <main className="m-auto max-w-screen-xl">
+        <main className="m-auto max-w-screen-2xl">
           <div className="flex h-[calc(100vh-112px)] flex-1 flex-row items-center space-x-16">
             <div className="space-y-8">
               <h2 className="text-7xl">
