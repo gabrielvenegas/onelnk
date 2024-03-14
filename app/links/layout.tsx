@@ -8,9 +8,9 @@ export default function PagesLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="h-screen">
-      <div className="flex w-full h-[6%] pt-4 px-4 justify-between">
-        <Link href="/" className="font-semibold text-xl">
+    <main className="m-auto h-screen space-y-4 pt-4 md:max-w-screen-2xl">
+      <div className="flex w-full justify-between px-2 md:px-0">
+        <Link href="/" className="text-xl font-semibold">
           OneLnk
         </Link>
 
@@ -19,7 +19,7 @@ export default function PagesLayout({
 
       <Separator />
 
-      {children}
+      <div className="p-2 md:p-0">{children}</div>
     </main>
   );
 }

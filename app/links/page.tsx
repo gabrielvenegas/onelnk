@@ -23,7 +23,7 @@ export default async function Pages() {
       GROUP BY p.id, p.text, p.slug, p."user";`;
 
   return (
-    <div className="flex flex-col space-y-4 p-4">
+    <div className="flex flex-col space-y-4">
       <div className="flex flex-row items-center justify-between">
         <h1 className="text-xl font-bold">Minhas páginas</h1>
         <Link href="/links/create">
