@@ -16,7 +16,7 @@ export default function RightCard() {
       perspective={900}
       glareEnable={true}
       glareMaxOpacity={0.45}
-      scale={1.02}
+      scale={1.1}
       style={{ height: 650, width: 380 }}
     >
       <div

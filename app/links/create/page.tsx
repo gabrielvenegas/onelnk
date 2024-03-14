@@ -137,7 +137,7 @@ export default function CreatePage() {
   };
 
   return (
-    <div className="flex flex-col space-y-4 p-4">
+    <div className="flex flex-col space-y-4">
       <h1 className="text-xl font-bold">Nova página</h1>
 
       <Form {...form}>

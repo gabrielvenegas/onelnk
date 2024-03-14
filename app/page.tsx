@@ -22,7 +22,7 @@ export default async function Home() {
           <div className="flex flex-1 flex-row items-center justify-between">
             <h1 className="text-2xl font-semibold">OneLnk</h1>
             {!user ? (
-              <Link href="/login">Fazer login</Link>
+              <Link href="/links">Fazer login</Link>
             ) : (
               <Link href="/links">Dashboard</Link>
             )}
@@ -30,13 +30,13 @@ export default async function Home() {
         </header>
 
         <main className="m-auto max-w-screen-2xl">
-          <div className="flex h-[calc(100vh-112px)] flex-1 flex-row items-center space-x-16">
+          <div className="flex h-[calc(100vh-115px)] flex-1 flex-row items-center space-x-12">
             <div className="space-y-8">
               <h2 className="text-7xl">
                 Defina Seu Espaço Online. Conexões Infinitas, Zero Despesa.
               </h2>
 
-              <p className="text-lg">
+              <p className="w-5/6 text-lg">
                 Centralize sua presença online em um único link fácil de
                 gerenciar. Com OneLnk, você tem o controle total para conectar
                 seu público às suas redes sociais, websites, e muito mais - sem
@@ -66,7 +66,7 @@ export default async function Home() {
           </div>
         </main>
 
-        <footer className="m-auto max-w-screen-2xl py-4">
+        <footer className="m-auto max-w-screen-2xl">
           <div className="flex flex-1 flex-row items-center justify-between">
             <h1>OneLnk©️ 2024 - Todos os direitos reservados</h1>
           </div>

@@ -43,6 +43,8 @@ export default function RootLayout({
           },
         },
       }}
+      afterSignInUrl="/links"
+      afterSignUpUrl="/links"
     >
       <html lang="en">
         <body className={cn(GeistSans.className, "h-screen")}>
