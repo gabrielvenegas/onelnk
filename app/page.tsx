@@ -7,6 +7,7 @@ import {
   StarIcon,
 } from "lucide-react";
 
+import { Badge } from "../components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
@@ -17,8 +18,8 @@ export default async function Home() {
 
   return (
     <>
-      <header className="m-auto px-4 md:px-0 max-w-screen-2xl py-4">
-        <div className="flex flex-1 flex-row items-center justify-between">
+      <header className="w-full  py-6">
+        <div className="container px-4 md:px-6 flex items-center justify-between">
           <h1 className="text-2xl font-semibold">OneLnk</h1>
           {!user ? (
             <Link href="/links">Fazer login</Link>
@@ -42,7 +43,7 @@ export default async function Home() {
               networks—all in one spot.
             </p>
 
-            <div className="flex flex-row justify-center space-x-6">
+            {/* <div className="flex flex-row justify-center space-x-6">
               <Input
                 className="max-w-md text-base"
                 placeholder="onelnk.pro/to/yourname"
@@ -51,7 +52,7 @@ export default async function Home() {
               <Button className="transition-colors duration-500">
                 Claim you free link
               </Button>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
@@ -71,11 +72,12 @@ export default async function Home() {
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-12">
             <div className="bg-white dark:bg-gray-950 p-6 rounded-lg shadow-sm">
-              <div className="flex items-center mb-4">
+              <div className="flex space-x-2 items-center mb-4">
                 <FolderOpenDot className="h-8 w-8 text-primary" />
                 <h3 className="ml-4 text-lg font-semibold">
                   Project Showcases
                 </h3>
+                <Badge>Soon</Badge>
               </div>
               <p className="text-gray-500 dark:text-gray-400">
                 Embed live GitHub repositories, display real-time stats, and
@@ -83,11 +85,12 @@ export default async function Home() {
               </p>
             </div>
             <div className="bg-white dark:bg-gray-950 p-6 rounded-lg shadow-sm">
-              <div className="flex items-center mb-4">
+              <div className="flex space-x-2 items-center mb-4">
                 <RssIcon className="h-8 w-8 text-primary" />
                 <h3 className="ml-4 text-lg font-semibold">
                   Integrated Blogging
                 </h3>
+                <Badge>Soon</Badge>
               </div>
               <p className="text-gray-500 dark:text-gray-400">
                 Automatically update your profile with your latest blog posts,
@@ -95,11 +98,12 @@ export default async function Home() {
               </p>
             </div>
             <div className="bg-white dark:bg-gray-950 p-6 rounded-lg shadow-sm">
-              <div className="flex items-center mb-4">
+              <div className="flex space-x-2 items-center mb-4">
                 <ShieldIcon className="h-8 w-8 text-primary" />
                 <h3 className="ml-4 text-lg font-semibold">
                   Developer-Focused Networking
                 </h3>
+                <Badge>Soon</Badge>
               </div>
               <p className="text-gray-500 dark:text-gray-400">
                 Direct links to your professional profiles on Stack Overflow,
@@ -108,11 +112,12 @@ export default async function Home() {
               </p>
             </div>
             <div className="bg-white dark:bg-gray-950 p-6 rounded-lg shadow-sm">
-              <div className="flex items-center mb-4">
+              <div className="flex space-x-2 items-center mb-4">
                 <LayersIcon className="h-8 w-8 text-primary" />
                 <h3 className="ml-4 text-lg font-semibold">
                   Enhanced Visibility
                 </h3>
+                <Badge>Soon</Badge>
               </div>
               <p className="text-gray-500 dark:text-gray-400">
                 With SEO optimization, make it easier for potential employers,
@@ -140,11 +145,10 @@ export default async function Home() {
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
               <div className="flex items-start mb-4">
                 <Avatar className="w-10 h-10 border">
-                  <AvatarImage alt="@shadcn" src="/placeholder-user.jpg" />
-                  <AvatarFallback>CN</AvatarFallback>
+                  <AvatarFallback>GE</AvatarFallback>
                 </Avatar>
                 <div className="ml-4">
-                  <h3 className="font-semibold">Sarah Johnson</h3>
+                  <h3 className="font-semibold">Gabriel Enrique</h3>
                   <div className="flex items-center gap-0.5 mt-1">
                     <StarIcon className="w-5 h-5" fill="black" />
                     <StarIcon className="w-5 h-5" fill="black" />
@@ -160,7 +164,7 @@ export default async function Home() {
                 and the support team has been amazing.
               </p>
             </div>
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+            {/* <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
               <div className="flex items-start mb-4">
                 <Avatar className="w-10 h-10 border">
                   <AvatarImage alt="@shadcn" src="/placeholder-user.jpg" />
@@ -205,7 +209,7 @@ export default async function Home() {
                 helpful. They've gone above and beyond to ensure I have a great
                 experience with the product.
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
