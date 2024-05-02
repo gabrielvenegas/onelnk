@@ -56,3 +56,15 @@ export function extractWebsiteName(url: string): string {
   // Capitalize the first letter and return
   return hostname.charAt(0).toUpperCase() + hostname.slice(1);
 }
+
+export function slugify(text: string): string {
+  return text
+    .toString()
+    .normalize("NFD") // Normalize to Normal Form Decomposed to split combined graphemes
+    .replace(/[\u0300-\u036f]/g, "") // Remove diacritics
+    .toLowerCase() // Convert to lowercase
+    .trim() // Trim whitespace from both sides
+    .replace(/\s+/g, "-") // Replace spaces with dashes
+    .replace(/[^\w\-]+/g, "") // Remove all non-word chars
+    .replace(/\-\-+/g, "-"); // Replace multiple dashes with one
+}

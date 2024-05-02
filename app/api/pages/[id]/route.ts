@@ -3,8 +3,6 @@ import { sql } from "@vercel/postgres";
 
 export const dynamic = "force-dynamic";
 
-export const runtime = "edge";
-
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }

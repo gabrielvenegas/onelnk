@@ -20,9 +20,8 @@ export async function GET(
     return new Response("Missing redirectUrl", { status: 400 });
   }
 
-  // add analytics track
   const db = createKysely();
-  db
+  await db
     // @ts-ignore
     .insertInto("analytics")
     .values({
@@ -33,5 +32,5 @@ export async function GET(
     })
     .execute();
 
-  redirect(redirectUrl);
+  return redirect(redirectUrl);
 }

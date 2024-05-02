@@ -2,9 +2,8 @@ import { Avatar, AvatarFallback } from "../components/ui/avatar";
 import { FolderOpenDot, RssIcon, ShieldIcon, StarIcon } from "lucide-react";
 
 import { Badge } from "../components/ui/badge";
-import { Button } from "../components/ui/button";
+import CreateAccount from "../components/hero/create-account";
 import Image from "next/image";
-import { Input } from "../components/ui/input";
 import Link from "next/link";
 import { currentUser } from "@clerk/nextjs/server";
 import githubImage from "../public/github-horizontal.webp";
@@ -18,11 +17,7 @@ export default async function Home() {
       <header className="w-full  py-6">
         <div className="container px-4 md:px-6 flex items-center justify-between">
           <h1 className="text-2xl font-semibold">OneLnk</h1>
-          {!user ? (
-            <Link href="/links">Fazer login</Link>
-          ) : (
-            <Link href="/links">Dashboard</Link>
-          )}
+          <Link href="/links">{!user ? "Fazer login" : "Dashboard"}</Link>
         </div>
       </header>
 
@@ -30,7 +25,7 @@ export default async function Home() {
         <div className="container space-y-4 px-4 md:px-6">
           <div className="md:text-center space-y-8">
             <h2 className="text-6xl xl:text-7xl">
-              Concentre Seu Portfólio em Um Único Link Dinâmico
+              Concentre Seu Portfólio em Um Único Lugar
             </h2>
 
             <p className="md:m-auto w-5/6 lg:text-lg">
@@ -39,17 +34,7 @@ export default async function Home() {
               comunidade tech
             </p>
 
-            <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-2">
-              <div className="flex flex-row items-center space-x-2">
-                <span className="md:text-lg font-semibold">
-                  https://onelnk.pro/to/
-                </span>
-                <Input className="text-base" placeholder="john-doe" />
-              </div>
-              <Button className="transition-colors duration-500">
-                Criar seu link grátis
-              </Button>
-            </div>
+            <CreateAccount />
           </div>
         </div>
       </section>

@@ -42,7 +42,7 @@ const formSchema = z.object({
         .min(3, CONSTANTS.required)
         .max(100)
         .url(CONSTANTS.invalidUrl),
-    }),
+    })
   ),
 });
 
@@ -187,7 +187,7 @@ export default function EditPage({
   }, [page, links]);
 
   return (
-    <div className="flex flex-col space-y-4 p-4">
+    <div className="flex flex-col space-y-4">
       <h1 className="text-xl font-bold">Edição de página</h1>
 
       <Form {...form}>

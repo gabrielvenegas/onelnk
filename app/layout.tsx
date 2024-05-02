@@ -53,7 +53,7 @@ export default function RootLayout({
           <Toaster />
         </body>
       </html>
-      <Analytics />
+      <Analytics debug={false} />
     </ClerkProvider>
   );
 }
