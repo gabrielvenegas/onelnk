@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowLeft, Loader2, PlusIcon, TrashIcon } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -8,7 +9,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Loader2, PlusIcon, TrashIcon } from "lucide-react";
 import { fetchLinksData, updateLinks } from "@/services/links";
 import { fetchPageData, updatePage } from "@/services/page";
 import { useEffect, useState } from "react";
@@ -188,8 +188,12 @@ export default function EditPage({
 
   return (
     <div className="flex flex-col space-y-4">
-      <h1 className="text-xl font-bold">Edição de página</h1>
-
+      <div className="flex flex-row items-center space-x-2">
+        <Button onClick={back} size="sm" variant="outline">
+          <ArrowLeft />
+        </Button>
+        <h1 className="text-xl font-bold">Edição de página</h1>
+      </div>
       <Form {...form}>
         <form
           className="space-y-4 pb-14"
