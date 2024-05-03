@@ -6,6 +6,8 @@ export async function POST(request: Request) {
     const body = await request.json();
     const db = createKysely();
 
+    console.log("body", body);
+
     await db
       // @ts-ignore
       .insertInto("links")

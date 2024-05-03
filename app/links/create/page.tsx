@@ -37,7 +37,7 @@ const formSchema = z.object({
         .min(3, CONSTANTS.required)
         .max(100)
         .url(CONSTANTS.invalidUrl),
-    }),
+    })
   ),
 });
 
@@ -78,6 +78,7 @@ export default function CreatePage() {
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
       setIsLoading(true);
+
       if (!user) return;
 
       const { id } = user;
@@ -104,6 +105,17 @@ export default function CreatePage() {
 
       if (!result) return;
 
+      if (data.links.length <= 0) {
+        toast({
+          title: "Página criada com sucesso!",
+          duration: 1500,
+        });
+
+        router.back();
+
+        return;
+      }
+
       const { rows } = result;
       const { id: pageId } = rows[0];
 
@@ -123,12 +135,12 @@ export default function CreatePage() {
         },
       });
 
-      toast({
-        title: "Página criada com sucesso!",
-        duration: 1500,
-      });
-
       if (linksResponse.ok) {
+        toast({
+          title: "Página criada com sucesso!",
+          duration: 1500,
+        });
+
         router.back();
       }
     } catch (error) {
