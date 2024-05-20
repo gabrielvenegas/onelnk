@@ -6,7 +6,9 @@ import CreateAccount from "../components/hero/create-account";
 import Image from "next/image";
 import Link from "next/link";
 import { currentUser } from "@clerk/nextjs/server";
+// @ts-ignore
 import githubImage from "../public/github-horizontal.webp";
+// @ts-ignore
 import notionImage from "../public/notion-horizontal.webp";
 
 export default async function Home() {

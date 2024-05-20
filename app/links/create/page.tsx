@@ -33,6 +33,7 @@ const formSchema = z.object({
   links: z.array(
     z.object({
       name: z.string().optional(),
+      type: z.string().optional(),
       url: z
         .string()
         .min(3, CONSTANTS.required)

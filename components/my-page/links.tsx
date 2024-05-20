@@ -1,12 +1,12 @@
 import { Card, CardContent } from "@/components/ui/card";
 
 import Link from "next/link";
-import { Page } from "../models/page";
+import { Page } from "../../models/page";
 import { sql } from "@vercel/postgres";
 
-export async function LinkList({ id, text, background }: Page) {
+export async function Links({ id, text, background }: Page) {
   const { rows } =
-    await sql`SELECT * FROM public."links" WHERE page_id = ${id}`;
+    await sql`SELECT * FROM public."links" WHERE page_id = ${id} and type = 'link'`;
 
   return (
     <div className="flex flex-col items-center w-full">

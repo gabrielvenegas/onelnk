@@ -23,7 +23,6 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Input } from "@/components/ui/input";
-import { cn } from "../../../../lib/utils";
 import { useState } from "react";
 
 const socialMediaList = [
@@ -54,9 +53,10 @@ const socialMediaList = [
 ];
 
 export default function SocialMedia() {
-  const [link, setLink] = useState<{ name: string; url: string }>({
+  const [link, setLink] = useState<{ name: string; url: string, type: string }>({
     name: "",
     url: "",
+    type: "social",
   });
   const { control } = useFormContext();
 
@@ -66,14 +66,10 @@ export default function SocialMedia() {
   });
 
   const onAddLink = () => {
-    if (fields.length >= 5) return;
-
     append(link);
   };
 
   const onRemoveLink = (index: number) => {
-    if (fields.length <= 0) return;
-
     remove(index);
   };
 
@@ -88,7 +84,7 @@ export default function SocialMedia() {
 
   return (
     <Dialog>
-      <div className="grid grid-cols-4 py-2 gap-2 w-[98vw]">
+      <div className="grid grid-cols-4 py-2 gap-2 w-[98vw] md:max-w-screen-2xl">
         {socialMediaList.map(({ id, Icon, name, uri }) => (
           <div key={id}>
             <DialogTrigger asChild>
@@ -101,7 +97,7 @@ export default function SocialMedia() {
                   backgroundColor: getColor(name).button,
                 }}
                 type="button"
-                onClick={() => setLink({ name, url: uri })}
+                onClick={() => setLink({ name, url: uri, type: "social" })}
               >
                 <Icon size={40} color={getColor(name).text} />
               </Button>

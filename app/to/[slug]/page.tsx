@@ -1,9 +1,9 @@
-import { Avatar, AvatarFallback } from "../../../components/ui/avatar";
 
 import Link from "next/link";
-import { LinkList } from "../../../components/link-list";
+import { Links as LinkList } from "../../../components/my-page/links";
 import { Page } from "../../../models/page";
 import { sql } from "@vercel/postgres";
+import { Social } from "@/components/my-page/social";
 
 export default async function Links({
   params,
@@ -36,6 +36,8 @@ export default async function Links({
     >
       <h1 className="text-2xl text-center font-semibold mb-4">{page.title}</h1>
       <p className="text-center mb-8">{page.description}</p>
+
+      <Social {...page} />
 
       <LinkList {...page} />
 
