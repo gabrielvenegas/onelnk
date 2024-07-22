@@ -8,16 +8,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Loader2, PlusIcon, TrashIcon } from "lucide-react";
 import { extractWebsiteName, generateHash } from "@/lib/utils";
+import { useFieldArray, useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { CONSTANTS } from "@/lib/constants";
 import ColorPicker from "@/components/ui/color-picker";
-import ContentTabs from "../_components/tabs";
 import { Input } from "@/components/ui/input";
-import { Loader2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
@@ -58,6 +57,23 @@ export default function CreatePage() {
       links: [],
     },
   });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "links",
+  });
+
+  const onAddLink = () => {
+    if (fields.length >= 5) return;
+
+    append({ name: "", url: "" });
+  };
+
+  const onRemoveLink = (index: number) => {
+    if (fields.length <= 0) return;
+
+    remove(index);
+  };
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
@@ -210,11 +226,68 @@ export default function CreatePage() {
             )}
           />
 
-          <div className="flex flex-row justify-between pt-4">
-            <h2 className="text-lg font-semibold">Conteúdo</h2>
+          <div className="flex flex-row justify-between">
+            <h2 className="text-lg font-semibold">Links - {fields.length}/5</h2>
+            <button type="button" onClick={onAddLink}>
+              <PlusIcon className="h-8 w-8 text-black dark:text-black" />
+            </button>
           </div>
 
-          <ContentTabs />
+          {fields.length === 0 && (
+            <p className="text-gray-500 dark:text-gray-400">
+              Nenhum link adicionado
+            </p>
+          )}
+
+          {fields.map((field, index) => (
+            <div
+              className="relative flex flex-col items-center space-y-2 rounded-lg bg-gray-100 p-3"
+              key={field.id}
+            >
+              <TrashIcon
+                onClick={() => onRemoveLink(index)}
+                className="absolute right-4 top-4 h-4 w-4"
+                color="red"
+              />
+
+              <FormField
+                control={form.control}
+                name={`links.${index}.url`}
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>URL do link</FormLabel>
+
+                    <FormControl>
+                      <Input
+                        placeholder="Ex.: https://x.com/johndoeex"
+                        autoCapitalize="off"
+                        autoFocus
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name={`links.${index}.name`}
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Nome do link (opcional)</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Ex.: Instagram"
+                        autoCapitalize="off"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          ))}
 
           <div className="fixed inset-x-0 bottom-0">
             <Button

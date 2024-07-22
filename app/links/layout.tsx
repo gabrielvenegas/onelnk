@@ -8,7 +8,7 @@ export default function PagesLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="m-auto h-screen space-y-4 pt-4 md:max-w-screen-2xl">
+    <main className="m-auto h-screen space-y-4 pt-4 md:max-w-screen-xl">
       <div className="flex w-full justify-between px-2 md:px-0">
         <Link href="/" className="text-xl font-semibold">
           OneLnk

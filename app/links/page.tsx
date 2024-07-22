@@ -1,5 +1,5 @@
 import Link from "next/link";
-import PageCard from "./_components/page-card";
+import PageCard from "./components/page-card";
 import { PlusIcon } from "lucide-react";
 import { currentUser } from "@clerk/nextjs/server";
 import { sql } from "@vercel/postgres";
